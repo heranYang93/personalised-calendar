@@ -51,13 +51,16 @@ WHEN I refresh the page
 THEN the saved events persist
 
 # Repository structure
+personalised-calendar/
+    html main page (Develop/index.html)
+    README.md
 
 personalised-calendar/Assets/
     the original requirement of this task(Assets/requirement.md)
     an original demo of this task(Assets/05-third-party-apis-homework-demo.gif)
 
 personalised-calendar/Develop
-    html main page (Develop/index.html)
+    h
     CSS file to style the app (Develop/style.css)
     Javascript to functionalise the app (Develop/script.js)
 
