@@ -1,5 +1,5 @@
 const workingHrStart = 9
-const workingHrEnd = 22
+const workingHrEnd = 18
 const workingHrsArray = Array.from( Array(workingHrEnd-workingHrStart+1), (val,id) => (id+workingHrStart) )
 
 const slotsContainer = $('.time-block')
@@ -48,6 +48,14 @@ $(document).ready(function(){
         // single hour display content
         singleHrDisplayEl.text(thisHrId+':00');
 
+        //Saving button
+        singleHrConfirmEl.text('💾')
+        $('.saveBtn').on('click',function(){
+            var inputText = $(this).siblings('.inputArea').val()
+            var inputTime = $(this).parent().attr('id')
+            localStorage.setItem(inputTime,inputText)
+        })
+
         // Input area colour
         var currentHr= moment().toArray()[3]//extract the current hour
         if (currentHr === thisHr){
@@ -63,12 +71,9 @@ $(document).ready(function(){
             singleHrInputEl.addClass('past')
         }
 
-        //Saving button
-        $('.saveBtn').on('click',function(){
-            var inputText = $(this).siblings('.inputArea').val()
-            var inputTime = $(this).parent().attr('id')
-        })
-    
+        //Render content to each input area
+        // compile the name of the item in which we want to render the text
+        singleHrInputEl.val(localStorage.getItem(thisHrId))
 
         // append element following the hierarchy
         singleHrWrapperEl.append(singleHrDisplayEl)
