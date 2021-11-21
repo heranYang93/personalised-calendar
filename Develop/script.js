@@ -11,7 +11,6 @@ $(document).ready(function(){
     $('#currentDay').text( moment().format('MMMM Do YYYY, h:mm:ss a') )
 
     for (var singleHrId in workingHrsArray){
-
         //for each hour, create a wrapper following this structure:
         //
         //<div class='singleTimeSlot row h-25' id='9'>
@@ -23,20 +22,24 @@ $(document).ready(function(){
         // A single hour
         var thisHr = workingHrsArray[singleHrId]
 
-        // Change the hour to a unique id
-        var thisHrId = parseFloat(thisHr)
-
         // Create a wrapper division
         var singleHrWrapperEl = $('<div>');
 
         // edit this wrapper class and id (use default height for now)
         singleHrWrapperEl.attr('class', 'time-block row');
-        singleHrWrapperEl.attr('id', thisHrId);
+        singleHrWrapperEl.attr('id', thisHr);
 
         //create three elements under this wrapper class
         var singleHrDisplayEl = $('<div>');
         var singleHrInputEl = $('<input>');
         var singleHrConfirmEl = $('<button>');
+
+        // append element following the hierarchy
+        singleHrWrapperEl.append(singleHrDisplayEl)
+        singleHrWrapperEl.append(singleHrInputEl)
+        singleHrWrapperEl.append(singleHrConfirmEl)
+
+        slotsContainer.append(singleHrWrapperEl)
 
         // give these elements their class and other attributes (be aware that the totle column nr = 12)
         // current width proportion = 2:8:2
@@ -46,7 +49,7 @@ $(document).ready(function(){
         singleHrConfirmEl.attr('class', 'saveBtn confirm col-md-2'); // saveBtn is by default
 
         // single hour display content
-        singleHrDisplayEl.text(thisHrId+':00');
+        singleHrDisplayEl.text(thisHr+':00');
 
         //Saving button
         singleHrConfirmEl.text('💾')
@@ -58,40 +61,21 @@ $(document).ready(function(){
 
         // Input area colour
         var currentHr= moment().toArray()[3]//extract the current hour
-        if (currentHr === thisHr){
-            //this hour = current hour => present
+        if (thisHr === currentHr){
+            //present
             singleHrInputEl.addClass('present')
         }
-        else if (currentHr > thisHr){
-            //this hour > current hour => future
-            singleHrInputEl.addClass('future')
-        }
-        else {
-            //this hour > current hour => past
+        else if (thisHr < currentHr){
+            //past
             singleHrInputEl.addClass('past')
+        }
+        else if (thisHr > currentHr) {
+            //future
+            singleHrInputEl.addClass('future')
         }
 
         //Render content to each input area
         // compile the name of the item in which we want to render the text
-        singleHrInputEl.val(localStorage.getItem(thisHrId))
-
-        // append element following the hierarchy
-        singleHrWrapperEl.append(singleHrDisplayEl)
-        singleHrWrapperEl.append(singleHrInputEl)
-        singleHrWrapperEl.append(singleHrConfirmEl)
-
-        slotsContainer.append(singleHrWrapperEl)
+        singleHrInputEl.val(localStorage.getItem(thisHr))
     }
-
-    // when save data is clicked
-    $('.saveData').on('click',function(){
-        var inputText = $(this).siblings('.inputArea').val()
-        var inputTime = $(this).parent().attr('id')
-        console.log(inputText)
-        console.log(inputTime)
-        localStorage.setItem(inputTime,inputText)
-    })
-
-    $('#9 .inputArea').val(localStorage.getItem('9'))
-
 })
